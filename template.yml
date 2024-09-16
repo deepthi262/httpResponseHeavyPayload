@@ -1,0 +1,55 @@
+
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  Lambda1Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambda1.handler
+      Runtime: nodejs20.x
+      MemorySize: 512
+      Timeout: 60
+      CodeUri: .
+      Environment:
+        Variables:
+          LAMBDA_2_NAME: !Ref Lambda2Function
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        
+        - Statement:
+            Effect: Allow
+            Action: lambda:InvokeFunction
+            Resource: !GetAtt Lambda2Function.Arn
+        - Statement:
+            Effect: Allow
+            Action:
+              - s3:PutObject
+              - s3:GetObject
+            Resource: arn:aws:s3:::mongo-to-s3-bucket/*
+
+  Lambda2Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambda2.handler
+      Runtime: nodejs20.x
+      MemorySize: 512
+      Timeout: 30
+      CodeUri: .
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - Statement:
+            Effect: Allow
+            Action:
+              - s3:GetObject
+              - s3:PutObject
+              - s3:CopyObject 
+            Resource: 
+              - arn:aws:s3:::mongo-to-s3-bucket/*
+              - arn:aws:s3:::mongo-to-s3-bucket
+Outputs:
+  Lambda1Function:
+    Description: "Lambda 1 Function ARN"
+    Value: !GetAtt Lambda1Function.Arn
+  Lambda2Function:
+    Description: "Lambda 2 Function ARN"
+    Value: !GetAtt Lambda2Function.Arn

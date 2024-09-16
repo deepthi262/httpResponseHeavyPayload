@@ -1,0 +1,17 @@
+{
+  "name": "aws_lambda_to_lambda_with_sam",
+  "version": "1.0.0",
+  "description": "This project demonstrates how to invoke one AWS Lambda function from another using Node.js and the AWS SDK, with two different options: - Option 1: Invoke Lambda 2 and wait for the response (Synchronous invocation). - Option 2: Invoke Lambda 2 but do not wait for the response (Asynchronous invocation). Return the execution ID.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1691.0",
+    "mongodb": "^6.8.1",
+    "uuid": "^10.0.0"
+  }
+}
